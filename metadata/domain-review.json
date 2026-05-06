@@ -1,0 +1,73 @@
+{
+  "repo": "tokenforge",
+  "language": "Go",
+  "category": "Developer tools",
+  "goal": "Generate a table-driven lexer from ordered token rules.",
+  "review_model": {
+    "terms": [
+      "change width",
+      "diagnostic quality",
+      "review cost",
+      "safe rewrite"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "change width",
+      "signal": 57,
+      "slack": 46,
+      "drag": 13,
+      "confidence": 93,
+      "score": 214,
+      "lane": "ship"
+    },
+    {
+      "name": "stress",
+      "focus": "diagnostic quality",
+      "signal": 45,
+      "slack": 54,
+      "drag": 30,
+      "confidence": 69,
+      "score": 123,
+      "lane": "watch"
+    },
+    {
+      "name": "edge",
+      "focus": "review cost",
+      "signal": 61,
+      "slack": 33,
+      "drag": 14,
+      "confidence": 51,
+      "score": 164,
+      "lane": "ship"
+    },
+    {
+      "name": "recovery",
+      "focus": "safe rewrite",
+      "signal": 71,
+      "slack": 31,
+      "drag": 9,
+      "confidence": 59,
+      "score": 205,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "change width",
+      "signal": 70,
+      "slack": 38,
+      "drag": 9,
+      "confidence": 48,
+      "score": 199,
+      "lane": "ship"
+    }
+  ]
+}

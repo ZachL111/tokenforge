@@ -1,69 +1,40 @@
 # tokenforge
 
-`tokenforge` is a Go project for Developer tools. It turns generate a table-driven lexer from ordered token rules into a small local model with readable fixtures and a direct verification command.
-
-## Reading Tokenforge
-
-Start with the README, then open `metadata/project.json` to check the constants behind the examples. After that, `fixtures/cases.csv` shows the compact path and `examples/extended_cases.csv` gives a wider look at the same rule.
+`tokenforge` is a compact Go repository for developer tools, centered on this goal: Generate a table-driven lexer from ordered token rules.
 
 ## Purpose
 
-This is not a wrapper around a service. It is a self-contained project that shows how the model behaves when demand, capacity, latency, risk, and weight move in different directions.
+The point is to make a small domain rule concrete enough that a reader can change it and immediately see what broke.
 
-## Fixture Notes
+## Tokenforge Review Notes
 
-The extended cases are not random smoke tests. `degraded` keeps pressure on the review path, while `surge` shows the model when capacity and weight are strong enough to clear the threshold.
+The first comparison I would make is `change width` against `diagnostic quality` because it shows where the rule is most opinionated.
 
-## Design Sketch
+## What Is Covered
 
-The project is organized around a compact model rather than a large framework. Inputs are scored, classified, and checked against golden fixtures. The constants live in code and are mirrored in metadata so documentation drift is easy to catch. The Go layout uses small packages and table-oriented tests so the behavior stays easy to follow.
+- `fixtures/domain_review.csv` adds cases for change width and diagnostic quality.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/tokenforge-walkthrough.md` walks through the case spread.
+- The Go code includes a review path for `change width` and `diagnostic quality`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## What It Does
+## Implementation Notes
 
-- Models code shape with deterministic scoring and explicit review decisions.
-- Uses fixture data to keep diagnostics changes visible in code review.
-- Includes extended examples for safe defaults, including `surge` and `degraded`.
-- Documents repeatable output tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
+The core code exposes a scoring path and the added review layer uses `signal`, `slack`, `drag`, and `confidence`. The domain terms are `change width`, `diagnostic quality`, `review cost`, and `safe rewrite`.
 
-## Usage
+The Go addition stays small enough to inspect in one sitting.
+
+## Command
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Audit Path
 
-## Verification
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
-
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Files Worth Reading
-
-- `policy`: Go package with the core model
-- `cmd`: small command entry point
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-- `go.mod`: Go module metadata
-
-## Next Directions
-
-- Add a short report command that prints the score breakdown for a single scenario.
-- Add malformed input fixtures so the failure path is as visible as the happy path.
-- Split the scoring constants into a typed configuration object and validate it before use.
-- Add one more developer tools fixture that focuses on a malformed or borderline input.
+The check exercises the source code and the review fixture. `baseline` is the high score at 214; `stress` is the low score at 123.
 
 ## Limits
 
-The fixture set is deliberately small. That keeps the review surface clear, but it also means the model should not be treated as a complete domain simulator.
-
-## Setup
-
-Install Go and run the commands from the repository root. The project does not need credentials or a hosted service.
+The fixture set is small enough to audit by hand. The next useful expansion is malformed input coverage, not extra surface area.
